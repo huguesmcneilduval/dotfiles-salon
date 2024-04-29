@@ -1,0 +1,75 @@
+{
+	"prefs": {
+		"downloadPath": "/home/chernobyl/Torrents",
+		"isFileHandler": true,
+		"openExternalPlayer": true,
+		"externalPlayerPath": "",
+		"startup": true,
+		"soundNotifications": true,
+		"autoAddTorrents": false,
+		"torrentsFolderPath": "",
+		"highestPlaybackPriority": true
+	},
+	"torrents": [],
+	"torrentsToResume": [],
+	"version": "0.24.0",
+	"telemetry": {
+		"userID": "8a323f1c9458a0a06107323f48cdc45085714a13e1a6dba49a267a401ff1817c",
+		"uncaughtErrors": [],
+		"playAttempts": {
+			"minVersion": "0.24.0",
+			"total": 0,
+			"success": 0,
+			"error": 0,
+			"external": 0,
+			"abandoned": 0
+		},
+		"version": "0.24.0",
+		"timestamp": "2024-04-27T14:40:33.542Z",
+		"localTime": "10:40:33 GMT-0400 (Eastern Daylight Time)",
+		"screens": [
+			{
+				"width": 2560,
+				"height": 1440,
+				"scaleFactor": 1
+			}
+		],
+		"system": {
+			"osPlatform": "linux",
+			"osRelease": "Linux 6.5.0-1020-oem",
+			"architecture": "x64",
+			"systemArchitecture": "x64",
+			"totalMemoryMB": 8192,
+			"numCores": 8
+		},
+		"torrentStats": {
+			"approxCount": 1,
+			"approxSizeMB": 32768,
+			"byStatus": {
+				"new": {
+					"approxCount": 0,
+					"approxSizeMB": 0
+				},
+				"downloading": {
+					"approxCount": 0,
+					"approxSizeMB": 0
+				},
+				"seeding": {
+					"approxCount": 1,
+					"approxSizeMB": 32768
+				},
+				"paused": {
+					"approxCount": 0,
+					"approxSizeMB": 0
+				}
+			}
+		},
+		"approxNumTorrents": 1
+	},
+	"bounds": {
+		"x": 304,
+		"y": 150,
+		"width": 1850,
+		"height": 1091
+	}
+}
