@@ -112,7 +112,7 @@ systemctl enable bluetooth # Enable Bluetooth
 Create users
 
 ```shell
-useradd -m salon
+useradd -m -G salon
 passwd salon
 visudo 
 
@@ -149,6 +149,11 @@ reboot
 Connect to internet : https://wiki.archlinux.org/title/NetworkManager
 ```shell
 nmcli device wifi connect <wifi> password <password>
+```
+
+Fix HDMI sound issue
+```shell
+echo "options snd_intel_dspcfg dsp_driver=3" | sudo tee /etc/modprobe.d/hdmi.conf
 ```
 
 Install YaY
