@@ -4,7 +4,7 @@
 ## [Install ArchLinux](https://wiki.archlinux.org/title/installation_guide)
 
 
-[Connect to internet]()
+Connect to internet
 ```shell
 iwctl
 > station wlan0 scan
@@ -14,10 +14,15 @@ Ctrl+d
 ping archlinux.org
 ```
 
+Update clock
+```
+timedatectl
+```
+
 Create partitions
 ```shell
 fdisk -l
-fdisk /dev/nvmen1
+fdisk /dev/nvme0n1
 # Create GPT partition table
 > g
 # Create Boot partition (1G)
@@ -25,7 +30,8 @@ fdisk /dev/nvmen1
 >> enter
 >> enter
 >> +1G
->t 1
+> t
+>> 1
 >> EFI System
 
 # Create swap partition
@@ -33,7 +39,8 @@ fdisk /dev/nvmen1
 >> enter
 >> enter
 >> +nG
->t 2
+> t
+>> 2
 >> Linux swap
 
 # Create root partition
@@ -49,14 +56,15 @@ fdisk /dev/nvmen1
 >> enter
 
 # Write to disk. This is destructive operation
+> w
 ``̀
 
 Write Filesystem on partitions
 ```shell
 mkfs.fat -F 32 /dev/nvme0n1p1
 mkswap /dev/nvme0n1p2
-mkfs.btfs /dev/nvme0n1p3
-mkfs.btfs /dev/nvme0n1p4
+mkfs.btrfs /dev/nvme0n1p3
+mkfs.btrfs /dev/nvme0n1p4
 ```
 
 Mount partitions
@@ -73,12 +81,13 @@ swapon /dev/nvme0n1p2
 
 Install packages
 ```shell
-pacstrap -K /mnt base linux linux-firmware sof-firmware vim intel-ucode networkmanager gnome git base-devel sudo bluez bluez-utils seahorse
+pacman -Sy archlinux-keyring
+pacstrap -K /mnt base base-devel linux linux-firmware efibootmgr sof-firmware vim intel-ucode networkmanager gnome git sudo bluez bluez-utils seahorse
 ```
 
 Create FS stab
 ```shell
-genfstab -U /mnt /mnt/etc/fstab
+genfstab -U /mnt > /mnt/etc/fstab
 ```
 
 Chroot
@@ -99,7 +108,7 @@ locale-gen
 
 Set hostname
 ```shell
-vim /etc/hostname
+vim /etc/hostname # salon
 ```
 
 Enable services
@@ -112,20 +121,21 @@ systemctl enable bluetooth # Enable Bluetooth
 Create users
 
 ```shell
-useradd -m -G salon
+useradd -m salon
 passwd salon
-visudo 
-
-```
-
-Quit chroot
-```shell
-exit
+# Allow user to sudo
+visudo # Uncomment %wheel ALL=(ALL:ALL) ALL
+usermod -a -G wheel salon
 ```
 
 Set Root password
 ```shell
 passwd
+```
+
+Quit chroot
+```shell
+exit
 ```
 
 Create Boot Loader
@@ -137,13 +147,15 @@ chmod +x aufii
 >> /dev/nvme0n1p1
 >> i
 >> l
+>> <enter>
 >> ce
 ```
 
 Reboot
 ```shell
 umount -R /mnt
-reboot
+shutdown -h now
+<start>
 ```
 
 Connect to internet : https://wiki.archlinux.org/title/NetworkManager
@@ -158,7 +170,7 @@ echo "options snd_intel_dspcfg dsp_driver=3" | sudo tee /etc/modprobe.d/hdmi.con
 
 Install YaY
 ```shell
-pacman -S --needed git base-devel
+# pacman -S --needed git base-devel
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
@@ -167,7 +179,6 @@ makepkg -si
 Install Brave
 ```shell
 sudo flatpak install flathub com.brave.Browser
-# or use the software
 ```
 Configure Brave
 - Remove the hardward acceleration in Settings/System
@@ -196,10 +207,13 @@ yay -Sy webtorrent-desktop
 
 Enable RDP
 ```shell
-grdctl enable rdp
-grdctl set-credentials salon <password>
-grdctl enable vnc
-grdctl set-password <password>
+read -s PASSWORD
+grdctl rdp enable
+grdctl set-credentials salon "$PASSWORD"
+grdctl vnc enable
+grdctl vnc disable-view-only
+grdctl vnc set-auth-method password
+echo "$PASSWORD" | grdctl set-password <password>
 ```
 
 # Configure Ubuntu
